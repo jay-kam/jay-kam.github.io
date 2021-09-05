@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Linux离线环境下安装包 | Jay kam の Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://jay-kam.github.io/favicon.ico?v=1630853724832">
+<link rel="stylesheet" href="https://jay-kam.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-206769368-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-206769368-1');
+</script>
+
+
+    <meta name="description" content="写在前面：可以直接先在一台有网机器下载相关软件包，然后上传到另一台无网机器上，安装即可。
+
+Linux下载包相关命令概述
+一、Centos
+
+方法1
+
+yum install --downloadonly --downloaddir=&qu..." />
+    <meta name="keywords" content="Linux" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://jay-kam.github.io">
+        <img src="https://jay-kam.github.io/images/avatar.png?v=1630853724832" class="site-logo">
+        <h1 class="site-title">Jay kam の Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      <a href="https://trusted-tuba-c78.notion.site/adff1af4fe7d458488c2dce722c5eeb8" target="_blank">My Notion Share</a> | <a class="rss" href="https://jay-kam.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Linux离线环境下安装包</h2>
+            <div class="post-date">2021-08-11</div>
+            
+              <div class="feature-container" style="background-image: url('https://jay-kam.github.io/post-images/linux-xia-zai-bao-xiang-guan-ming-ling-gai-shu.jpg')">
+              </div>
+            
+            <div class="post-content" v-pre>
+              <p>写在前面：可以直接先在一台有网机器下载相关软件包，然后上传到另一台无网机器上，安装即可。</p>
+<!-- more -->
+<h1 id="linux下载包相关命令概述">Linux下载包相关命令概述</h1>
+<h3 id="一-centos">一、Centos</h3>
+<ul>
+<li>方法1</li>
+</ul>
+<pre><code>yum install --downloadonly --downloaddir=&quot;path&quot; &lt;pkg_name&gt; 
+</code></pre>
+<ul>
+<li>仅下载，不安装。不加--downloadonly则会下载后安装(注意：若/etc/yum.conf 配置文件中keepcache=0，则安装后不会保留缓存)。</li>
+<li>默认缓存在/var/cache/yum下，或 /etc/yum.conf 配置文件中cachedir指定的位置下。可通过--downloaddir参数指定下载位置。</li>
+</ul>
+<h4 id="方法2">方法2</h4>
+<pre><code>yumdownloader --resolve --destdir &quot;save_path&quot;  &lt;pkg_name&gt; 
+</code></pre>
+<ul>
+<li>下载软件包。加上--resolve参数会分析依赖。</li>
+<li>默认保存到当前目录，可通过--destdir指定保存目录。</li>
+</ul>
+<h4 id="方法3">方法3</h4>
+<pre><code class="language-bash">repotrack &lt;pkg_name&gt;   
+</code></pre>
+<ul>
+<li>下载软件包及所有相关的依赖。</li>
+<li>默认保存到当前目录。</li>
+</ul>
+<h3 id="二-ubuntu">二、Ubuntu</h3>
+<h4 id="方法1">方法1</h4>
+<pre><code class="language-bash">apt install --reinstall -d &lt;pkg_name&gt;
+</code></pre>
+<ul>
+<li>Ubuntu仅下载，不安装。不加-d则会下载后安装。</li>
+<li>默认缓存在/var/cache/apt/archives下。</li>
+</ul>
+<h4 id="方法2-2">方法2</h4>
+<pre><code class="language-bash">apt depends &lt;pkg_name&gt;   # 查看软件包依赖
+apt download &lt;pkg_name&gt;  # 下载软件包
+</code></pre>
+<ul>
+<li>默认保存到当前目录。</li>
+<li>可综合上面两条命令，根据自己电脑实际情况，利用管道，可写出下面类似的命令。</li>
+</ul>
+<pre><code class="language-bash">apt-get download $(apt-cache depends --recurse --no-recommends --no-suggests --no-conflicts --no-breaks --no-replaces --no-enhances --no-pre-depends &lt;pkg_name&gt; | grep -v i386 | grep &quot;^\w&quot;)
+</code></pre>
+<h1 id="centos系统离线环境">Centos系统离线环境</h1>
+<p>首先在有网环境下好软件包，在U盘拷贝到离线机器上安装。这里以docker-ce、ngnix举例。</p>
+<h3 id="一-预备操作">一、预备操作</h3>
+<h4 id="1-换centos-base源">1、换CentOS-Base源</h4>
+<pre><code class="language-bash"># 换阿里源（加快下载速度）
+sudo wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+</code></pre>
+<h4 id="2-添加epel源">2、添加epel源</h4>
+<pre><code class="language-bash"># 添加epel源（Extra Packages for Enterprise Linux）
+sudo wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
+</code></pre>
+<h4 id="3-添加docker-ce源">3、添加docker-ce源</h4>
+<p>yum-util提供yum-config-manager功能，若机器<strong>已默认安装</strong>，则可<strong>跳过</strong></p>
+<pre><code class="language-bash">sudo yum install -y yum-utils
+</code></pre>
+<p>添加docker-ce源</p>
+<pre><code class="language-bash"># 阿里云的docker-ce镜像源
+sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+</code></pre>
+<p>或</p>
+<pre><code class="language-bash"># 官网的docker-ce镜像源
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+</code></pre>
+<h3 id="二-下载软件包">二、下载软件包</h3>
+<h4 id="1-创建下载软件包的保存根目录">1、创建下载软件包的保存根目录</h4>
+<pre><code class="language-bash">mkdir pkgs_install
+cd pkgs_install
+</code></pre>
+<h4 id="2-docker-ce-下载">2、docker-ce 下载</h4>
+<p>下载devicemapper驱动依赖（根据实际情况，判断是否下载）</p>
+<pre><code class="language-bash">mkdir dm-dep
+yumdownloader device-mapper-persistent-data lvm2 --resolve --destdir ./dm-dep
+</code></pre>
+<p>下载docker-ce</p>
+<pre><code class="language-bash">mkdir docker-ce
+yumdownloader docker-ce --resolve --destdir ./docker-ce
+</code></pre>
+<p>若需指定版本</p>
+<pre><code class="language-bash"># 搜索docker-ce版本，且倒序显示
+yum list docker-ce --showduplicates | sort -r
+# 指定版本安装，版本号可以忽略 : 和 el7
+yumdownloader docker-ce-&lt;VERSION STRING&gt; --resolve --destdir ./docker-ce-&lt;VERSION STRING&gt;
+</code></pre>
+<h4 id="3-nginx下载">3、nginx下载</h4>
+<pre><code class="language-bash">mkdir nginx
+yumdownloader nginx --resolve --destdir ./nginx
+</code></pre>
+<h3 id="三-拷贝到离线环境机器安装">三、拷贝到离线环境机器安装</h3>
+<pre><code class="language-bash">cd pkgs_install
+sudo yum localinstall dm-dep/*.rpm
+sudo yum localinstall docker-ce/*.rpm
+sudo yum localinstall nginx/*.rpm
+</code></pre>
+<h1 id="ubuntu系统离线环境">Ubuntu系统离线环境</h1>
+<pre><code class="language-bash"># 查看依赖
+apt-cache depend &lt;package name&gt;
+# 递归下载所有 deb 依赖 (目前极少用到 32 位架构 过滤掉 i386 )
+apt-get download $(apt-cache depends --recurse --no-recommends --no-suggests --no-conflicts --no-breaks --no-replaces --no-enhances --no-pre-depends python-setuptools | grep -v i386 | grep &quot;^\w&quot;)
+# 离线安装 deb 包
+dpkg -i &lt;package name&gt;
+</code></pre>
+<!-- more -->
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://jay-kam.github.io/tag/eVqame8br/" class="tag">
+                    Linux
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://jay-kam.github.io/post/ubuntu-server-chi-xian-an-zhuang/">
+                  <h3 class="post-title">
+                    Ubuntu Server离线安装
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

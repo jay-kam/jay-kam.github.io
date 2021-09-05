@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Linux常用命令（shell） | Jay kam の Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://jay-kam.github.io/favicon.ico?v=1630853724832">
+<link rel="stylesheet" href="https://jay-kam.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-206769368-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-206769368-1');
+</script>
+
+
+    <meta name="description" content="这里记录常用的Linux使用命令，以备忘。
+
+查看系统、磁盘信息
+cat /etc/os-release          #查看os版本
+cat /etc/centos-release      #查看Centos版本 (Centos特有..." />
+    <meta name="keywords" content="Linux" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://jay-kam.github.io">
+        <img src="https://jay-kam.github.io/images/avatar.png?v=1630853724832" class="site-logo">
+        <h1 class="site-title">Jay kam の Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      <a href="https://trusted-tuba-c78.notion.site/adff1af4fe7d458488c2dce722c5eeb8" target="_blank">My Notion Share</a> | <a class="rss" href="https://jay-kam.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Linux常用命令（shell）</h2>
+            <div class="post-date">2020-09-05</div>
+            
+              <div class="feature-container" style="background-image: url('https://jay-kam.github.io/post-images/linux-chang-yong-ming-ling-shell.jpg')">
+              </div>
+            
+            <div class="post-content" v-pre>
+              <p>这里记录常用的Linux使用命令，以备忘。</p>
+<!-- more -->
+<h1 id="查看系统-磁盘信息">查看系统、磁盘信息</h1>
+<pre><code class="language-shell">cat /etc/os-release          #查看os版本
+cat /etc/centos-release      #查看Centos版本 (Centos特有)
+cat /etc/fstab               #查看静态文件系统信息表
+cat /proc/version            #查看linux kernel版本、gcc版本
+uname -a                     #查看系统信息(kernel版本、硬件架构、主机名称等)
+sudo blkid                   #查看block设备信息
+sudo fdisk -l                #查看磁盘信息
+sudo dmsetup ls              #查看/dev/dm-*信息
+losetup -a                   #查看/dev/loop信息
+df -hT                       #&lt;disk free&gt;查看已挂载设备信息
+du -hs                       #&lt;disk usage&gt;查看当前文件夹的大小, 后可跟/path/to/file
+ps -aux                      # 显示进程（BSD Style）
+ps -ef                       # 显示进程（System Ｖ Style）
+</code></pre>
+<h1 id="磁盘操作">磁盘操作</h1>
+<pre><code class="language-shell">fdisk /dev/sda                  #操作磁盘/dev/sda
+e2lable /dev/sda new_labe       #更改ext2/3/4格式的磁盘/分区label
+ntfslabel /dev/sda1 new_label   #更改ntfs格式的磁盘/分区label
+</code></pre>
+<h1 id="文件操作复制-移动-删除">文件操作(复制、移动、删除)</h1>
+<h3 id="1-文件复制cp">1、文件复制(cp)</h3>
+<pre><code class="language-shell"># cp复制时不保留链接，复制链接文件内容
+cp -L,--dereference /src/path /dst/path 
+
+# cp复制时保留链接
+cp -P,--no-dereference  /src/path /dst/path 
+# cp复制时保留链接（same as --no-dereference --preserve=links）
+cp -d /src/path /dst/path
+
+# 除复制文件的内容外，还把修改时间和访问权限也复制到新文件中 (same as --preserve=mode,ownership,timestamps)
+cp -p /src/path /dst/path             
+
+# 通常在复制目录时使用，它保留链接、文件属性，并复制目录下的所有内容
+#（same as -dR --preserve=all）
+cp -a,--archive  /src/path /dst/path 
+
+# 若给出的源文件是一个目录文件，此时将复制该目录下所有的子目录和文件
+cp  -r,-R,--recursive  /src/path /dst/path
+</code></pre>
+<h3 id="2-文件移动">2、文件移动</h3>
+<pre><code class="language-shell"># 重名名
+mv file_name new_file_name
+# 移动文件
+mv /src/path /dst/path
+</code></pre>
+<h3 id="3-文件删除">3、文件删除</h3>
+<pre><code class="language-shell">rm /src/path
+</code></pre>
+<h3 id="4-文件压缩与解压">4、文件压缩与解压</h3>
+<pre><code class="language-shell">tar -cvf filename.tar compress_path        # 压缩到 filename.tar
+tar -xvf filename.tar -C extract_path      # 解压   filename.tar
+tar -zcvf filename.tar.gz compress_path    # 压缩到 filename.tar.gz 
+tar -zxvf filename.tar.gz -C extract_path  # 解压   filename.tar.gz 
+</code></pre>
+<h1 id="网络操作下载-上传">网络操作(下载、上传)</h1>
+<h3 id="1-直接显示网页内容">1、直接显示网页内容</h3>
+<pre><code class="language-shell"># curl
+curl [url]
+</code></pre>
+<h3 id="2-下载">2、下载</h3>
+<p>wget命令</p>
+<pre><code class="language-shell"># 直接下载
+wget [url]
+# 指定下载位置
+wget -O [path] [url]
+</code></pre>
+<p>curl命令</p>
+<pre><code class="language-shell"># curl下载文件, url需要具体到某个文件, 并直接以服务器文件名称保存到本地
+curl -O [url]
+# curl下载文件，指定名称
+curl -o [save_file_name] [url]
+curl [url] &gt; [save_file_name]
+# curl循环下载，-o、-O参数都可支持。但某些特殊情况，如下举例，若使用-O参数会导致文件被覆盖（下载的hello与bb中的文件名都是dodo1，dodo2，dodo3，dodo4，dodo5），此时需要重命名
+curl -o #1_#2.JPG http://www.linux.com/{hello,bb}/dodo[1-5].JPG
+# curl分块下载，加 -r [a-b]参数, 默认单位为byte
+curl -r 0-100 -o dodo1_part1.JPG http://www.linux.com/dodo1.JPG
+curl -r 100-200 -o dodo1_part2.JPG http://www.linux.com/dodo1.JPG
+curl -r 200- -o dodo1_part3.JPG http://www.linux.com/dodo1.JPG
+cat dodo1_part* &gt; dodo1.JPG
+</code></pre>
+<h3 id="3-上传">3、上传</h3>
+<p>curl命令</p>
+<pre><code class="language-shell"># 上传文件
+curl -T dodo1.JPG -u 用户名:密码 ftp://www.linux.com/img/
+</code></pre>
+<h3 id="4-curl其他参数">4、curl其他参数</h3>
+<pre><code class="language-shell">-C/--continue-at &lt;offset&gt;    断点续转
+-#/--progress-bar            进度条显示当前的传送状态
+-s/--silent                  静音模式。不输出任何东西
+</code></pre>
+<h3 id="5-网络运维">5、网络运维</h3>
+<pre><code class="language-shell">netstat -nlp   # 查看端口
+</code></pre>
+<h1 id="远程操作">远程操作</h1>
+<pre><code class="language-shell"># ssh远程登陆
+ssh [dst_user_name]@[dst_computer_ip]
+
+# scp复制，若需指定端口，需加上选项 -P [port_number]
+scp [src_file_path] [dst_user_name]@[dst_computer_ip]:[dst_file_path]
+scp [src_file_path] [dst_computer_ip]:[dst_file_path]
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://jay-kam.github.io/tag/eVqame8br/" class="tag">
+                    Linux
+                  </a>
+                
+              </div>
+            
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
